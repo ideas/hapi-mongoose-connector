@@ -8,7 +8,7 @@ Mongoose connector plugin for the hapi framework.
 
 ## Installation
 
-```
+```sh
 npm install --save @ideapod/hapi-mongoose-connector
 ```
 
@@ -16,9 +16,9 @@ npm install --save @ideapod/hapi-mongoose-connector
 
 The plugin accepts a URI parameter to connect to the MongoDB instance. Example:
 
-```
+```javascript
 const Hapi = require('hapi');
-const HapiMongooseConnector = require('hapi-mongoose-connector');
+const HapiMongooseConnector = require('@ideapod/hapi-mongoose-connector');
 
 const server = new Hapi.Server();
 server.connection();
