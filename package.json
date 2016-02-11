@@ -1,0 +1,37 @@
+{
+  "name": "@ideapod/hapi-mongoose-connector",
+  "version": "0.0.0",
+  "description": "Mongoose connector plugin for the hapi framework.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "lab --assert code --coverage --lint --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ideas/hapi-mongoose-connector.git"
+  },
+  "keywords": [
+    "hapi",
+    "mongoose",
+    "connector"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ideas/hapi-mongoose-connector/issues"
+  },
+  "homepage": "https://github.com/ideas/hapi-mongoose-connector",
+  "dependencies": {
+    "joi": "7.2.x"
+  },
+  "peerDependencies": {
+    "hapi": ">=10.0.0",
+    "mongoose": ">=4.0.0"
+  },
+  "devDependencies": {
+    "code": "2.1.x",
+    "@ideapod/eslint-config": "ideas/eslint-config",
+    "hapi": "13.0.x",
+    "lab": "8.2.x",
+    "mongoose": "4.4.x"
+  }
+}
