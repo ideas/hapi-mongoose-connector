@@ -14,11 +14,11 @@ exports.register = function (server, options, next) {
     return next(result.error);
   }
 
-  Mongoose.createConnection(options.uri, (err) => next(err));
-
-  server.on('stop', () => {
-    Mongoose.connection.close();
+  server.ext('onPostStop', (server, next) => {
+    Mongoose.connection.close().then(next, next);
   });
+
+  Mongoose.connect(options.uri).then(next, next);
 };
 
 exports.register.attributes = {
