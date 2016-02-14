@@ -26,6 +26,7 @@ lab.describe('Connector', () => {
 
     server.register(plugin, (err) => {
       expect(err).to.not.exist();
+      expect(Mongoose.connection.readyState).to.equal(Mongoose.Connection.STATES.connected);
       server.stop(done);
     });
   });
@@ -78,7 +79,7 @@ lab.describe('Connector', () => {
       expect(err).to.not.exist();
 
       server.stop(() => {
-        expect(Mongoose.connection.readyState).to.equal(0);
+        expect(Mongoose.connection.readyState).to.equal(Mongoose.Connection.STATES.disconnected);
         server.stop(done);
       });
     });
