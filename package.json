@@ -4,7 +4,10 @@
   "description": "Mongoose connector plugin for the hapi framework.",
   "main": "src/index.js",
   "scripts": {
-    "test": "lab --assert code --coverage --verbose"
+    "test": "lab --assert code --coverage --lint --verbose"
+  },
+  "engines": {
+    "node": ">=4.0.0"
   },
   "repository": {
     "type": "git",
@@ -21,7 +24,7 @@
   },
   "homepage": "https://github.com/ideas/hapi-mongoose-connector",
   "dependencies": {
-    "joi": "7.3.x"
+    "joi": "8.0.x"
   },
   "peerDependencies": {
     "hapi": ">=10.0.0",
@@ -29,9 +32,9 @@
   },
   "devDependencies": {
     "code": "2.1.x",
-    "@ideapod/eslint-config": "ideas/eslint-config",
+    "@ideapod/eslint-config": "2.0.x",
     "hapi": "13.0.x",
-    "lab": "8.2.x",
+    "lab": "10.0.x",
     "mongoose": "4.4.x"
   }
 }
