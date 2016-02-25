@@ -14,11 +14,16 @@ exports.register = function (server, options, next) {
     return next(result.error);
   }
 
+  const connection = Mongoose.createConnection(result.value.uri);
+
+  connection.on('open', next);
+  connection.on('error', next);
+
   server.ext('onPostStop', (server, next) => {
-    Mongoose.connection.close().then(next, next);
+    connection.close().then(next, next);
   });
 
-  Mongoose.connect(options.uri).then(next, next);
+  server.expose('connection', connection);
 };
 
 exports.register.attributes = {

@@ -26,7 +26,10 @@ lab.describe('Connector', () => {
 
     server.register(plugin, (err) => {
       expect(err).to.not.exist();
-      expect(Mongoose.connection.readyState).to.equal(Mongoose.Connection.STATES.connected);
+
+      const connection = server.plugins['hapi-mongoose-connector'].connection;
+      expect(connection.readyState).to.equal(Mongoose.Connection.STATES.connected);
+
       server.stop(done);
     });
   });
@@ -78,8 +81,12 @@ lab.describe('Connector', () => {
     server.register(plugin, (err) => {
       expect(err).to.not.exist();
 
-      server.stop(() => {
-        expect(Mongoose.connection.readyState).to.equal(Mongoose.Connection.STATES.disconnected);
+      server.stop((err) => {
+        expect(err).to.not.exist();
+
+        const connection = server.plugins['hapi-mongoose-connector'].connection;
+        expect(connection.readyState).to.equal(Mongoose.Connection.STATES.disconnected);
+
         server.stop(done);
       });
     });
