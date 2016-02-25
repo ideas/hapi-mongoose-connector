@@ -11,7 +11,8 @@ exports.register = function (server, options, next) {
 
   const result = Joi.validate(options, schema);
   if (result.error) {
-    return next(result.error);
+    next(result.error);
+    return;
   }
 
   const connection = Mongoose.createConnection(result.value.uri);
