@@ -7,7 +7,7 @@
     "test": "lab --assert code --coverage --lint --verbose"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=5.0.0"
   },
   "repository": {
     "type": "git",
@@ -27,14 +27,14 @@
     "joi": "8.0.x"
   },
   "peerDependencies": {
-    "hapi": ">=10.0.0",
+    "hapi": ">=12.0.0",
     "mongoose": ">=4.0.0"
   },
   "devDependencies": {
     "code": "2.1.x",
     "@ideapod/eslint-config": "2.0.x",
     "hapi": "13.0.x",
-    "lab": "10.0.x",
+    "lab": "10.1.x",
     "mongoose": "4.4.x",
     "sinon": "1.17.x"
   }
