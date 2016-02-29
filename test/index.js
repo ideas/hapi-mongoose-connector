@@ -13,8 +13,8 @@ const HapiMongooseConnector = require('..');
 const lab = exports.lab = Lab.script();
 const expect = Lab.assertions.expect;
 
-lab.describe('Connector', () => {
-  lab.it('connects to the server', (done) => {
+lab.describe('Connector', { parallel: true }, () => {
+  lab.it('connects to the server', () => {
     const server = new Hapi.Server();
     server.connection();
 
@@ -25,17 +25,16 @@ lab.describe('Connector', () => {
       }
     };
 
-    server.register(plugin, (err) => {
-      expect(err).to.not.exist();
+    return server.register(plugin)
+      .then(() => {
+        const connection = server.plugins['hapi-mongoose-connector'].connection;
+        expect(connection.readyState).to.equal(Mongoose.Connection.STATES.connected);
 
-      const connection = server.plugins['hapi-mongoose-connector'].connection;
-      expect(connection.readyState).to.equal(Mongoose.Connection.STATES.connected);
-
-      server.stop(done);
-    });
+        return server.stop;
+      });
   });
 
-  lab.it('supports the MONGODB_URL environment variable', (done) => {
+  lab.it('supports the MONGODB_URL environment variable', () => {
     const sandbox = Sinon.sandbox.create().stub(process, 'env', {
       MONGODB_URL: 'mongodb://127.0.0.1:27017/test'
     });
@@ -47,18 +46,17 @@ lab.describe('Connector', () => {
       register: HapiMongooseConnector
     };
 
-    server.register(plugin, (err) => {
-      expect(err).to.not.exist();
+    return server.register(plugin)
+      .then(() => {
+        const connection = server.plugins['hapi-mongoose-connector'].connection;
+        expect(connection.readyState).to.equal(Mongoose.Connection.STATES.connected);
 
-      const connection = server.plugins['hapi-mongoose-connector'].connection;
-      expect(connection.readyState).to.equal(Mongoose.Connection.STATES.connected);
-
-      sandbox.restore();
-      server.stop(done);
-    });
+        sandbox.restore();
+        return server.stop();
+      });
   });
 
-  lab.it('supports the MONGODB_HOST and MONGODB_PORT environment variables', (done) => {
+  lab.it('supports the MONGODB_HOST and MONGODB_PORT environment variables', () => {
     const sandbox = Sinon.sandbox.create().stub(process, 'env', {
       MONGODB_HOST: '127.0.0.1',
       MONGODB_PORT: '27017'
@@ -71,18 +69,59 @@ lab.describe('Connector', () => {
       register: HapiMongooseConnector
     };
 
-    server.register(plugin, (err) => {
-      expect(err).to.not.exist();
+    return server.register(plugin)
+      .then(() => {
+        const connection = server.plugins['hapi-mongoose-connector'].connection;
+        expect(connection.readyState).to.equal(Mongoose.Connection.STATES.connected);
 
-      const connection = server.plugins['hapi-mongoose-connector'].connection;
-      expect(connection.readyState).to.equal(Mongoose.Connection.STATES.connected);
-
-      sandbox.restore();
-      server.stop(done);
-    });
+        sandbox.restore();
+        return server.stop();
+      });
   });
 
-  lab.it('throws an error when configuration is invalid', (done) => {
+  lab.it('throws an error when MONGODB_HOST is not specified', () => {
+    const sandbox = Sinon.sandbox.create().stub(process, 'env', {
+      MONGODB_PORT: '27017'
+    });
+
+    const server = new Hapi.Server();
+    server.connection();
+
+    const plugin = {
+      register: HapiMongooseConnector
+    };
+
+    return server.register(plugin)
+      .catch((err) => {
+        expect(err.message).to.match(/"uri" is required/);
+
+        sandbox.restore();
+        return server.stop();
+      });
+  });
+
+  lab.it('throws an error when MONGODB_PORT is not specified', () => {
+    const sandbox = Sinon.sandbox.create().stub(process, 'env', {
+      MONGODB_HOST: '127.0.0.1'
+    });
+
+    const server = new Hapi.Server();
+    server.connection();
+
+    const plugin = {
+      register: HapiMongooseConnector
+    };
+
+    return server.register(plugin)
+      .catch((err) => {
+        expect(err.message).to.match(/"uri" is required/);
+
+        sandbox.restore();
+        return server.stop();
+      });
+  });
+
+  lab.it('throws an error when configuration is invalid', () => {
     const server = new Hapi.Server();
     server.connection();
 
@@ -91,11 +130,11 @@ lab.describe('Connector', () => {
       options: {}
     };
 
-    server.register(plugin, (err) => {
-      expect(err).to.exist();
-      expect(err.message).to.match(/"uri" is required/);
-      server.stop(done);
-    });
+    return server.register(plugin)
+      .catch((err) => {
+        expect(err.message).to.match(/"uri" is required/);
+        return server.stop();
+      });
   });
 
   lab.it('throws an error when connection fails', (done) => {
@@ -109,13 +148,14 @@ lab.describe('Connector', () => {
       }
     };
 
-    server.register(plugin, (err) => {
-      expect(err).to.exist();
-      server.stop(done);
-    });
+    return server.register(plugin)
+      .catch((err) => {
+        expect(err).to.exist();
+        return server.stop();
+      });
   });
 
-  lab.it('closes the connection when server stops', (done) => {
+  lab.it('closes the connection when server stops', () => {
     const server = new Hapi.Server();
     server.connection();
 
@@ -126,17 +166,11 @@ lab.describe('Connector', () => {
       }
     };
 
-    server.register(plugin, (err) => {
-      expect(err).to.not.exist();
-
-      server.stop((err) => {
-        expect(err).to.not.exist();
-
+    return server.register(plugin)
+      .then(() => server.stop())
+      .then(() => {
         const connection = server.plugins['hapi-mongoose-connector'].connection;
         expect(connection.readyState).to.equal(Mongoose.Connection.STATES.disconnected);
-
-        server.stop(done);
       });
-    });
   });
 });
