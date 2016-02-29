@@ -35,6 +35,7 @@
     "@ideapod/eslint-config": "2.0.x",
     "hapi": "13.0.x",
     "lab": "10.0.x",
-    "mongoose": "4.4.x"
+    "mongoose": "4.4.x",
+    "sinon": "1.17.x"
   }
 }

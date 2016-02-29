@@ -3,13 +3,40 @@
 // Load external modules
 const Mongoose = require('mongoose');
 const Joi = require('joi');
+const Url = require('url');
 
-exports.register = function (server, options, next) {
+function configure(options) {
+  const config = Object.assign({}, options);
+
+  if (!config.uri) {
+    if (process.env.MONGODB_URL) {
+      config.uri = process.env.MONGODB_URL;
+    } else if (process.env.MONGODB_HOST && process.env.MONGODB_PORT) {
+      config.uri = Url.format({
+        protocol: 'mongodb',
+        slashes: true,
+        hostname: process.env.MONGODB_HOST,
+        port: process.env.MONGODB_PORT,
+        pathname: process.env.MONGODB_DATABASE
+      });
+    }
+  }
+
+  return config;
+}
+
+function validate(config) {
   const schema = Joi.object({
     uri: Joi.string().required()
   });
 
-  const result = Joi.validate(options, schema);
+  return Joi.validate(config, schema);
+}
+
+exports.register = function (server, options, next) {
+  const config = configure(options);
+  const result = validate(config);
+
   if (result.error) {
     next(result.error);
     return;
