@@ -1,8 +1,8 @@
 'use strict';
 
 // Load external modules
-const Mongoose = require('mongoose');
 const Joi = require('joi');
+const Mongoose = require('mongoose');
 const Url = require('url');
 
 function configure(options) {

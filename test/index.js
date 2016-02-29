@@ -59,7 +59,7 @@ lab.describe('Connector', { parallel: true }, () => {
   lab.it('supports the MONGODB_HOST and MONGODB_PORT environment variables', () => {
     const sandbox = Sinon.sandbox.create().stub(process, 'env', {
       MONGODB_HOST: '127.0.0.1',
-      MONGODB_PORT: '27017'
+      MONGODB_PORT: 27017
     });
 
     const server = new Hapi.Server();
@@ -81,7 +81,7 @@ lab.describe('Connector', { parallel: true }, () => {
 
   lab.it('throws an error when MONGODB_HOST is not specified', () => {
     const sandbox = Sinon.sandbox.create().stub(process, 'env', {
-      MONGODB_PORT: '27017'
+      MONGODB_PORT: 27017
     });
 
     const server = new Hapi.Server();
@@ -137,7 +137,7 @@ lab.describe('Connector', { parallel: true }, () => {
       });
   });
 
-  lab.it('throws an error when connection fails', (done) => {
+  lab.it('throws an error when connection fails', () => {
     const server = new Hapi.Server();
     server.connection();
 
