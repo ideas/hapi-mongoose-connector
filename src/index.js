@@ -9,8 +9,8 @@ function configure(options) {
   const config = Object.assign({}, options);
 
   if (!config.uri) {
-    if (process.env.MONGODB_URL) {
-      config.uri = process.env.MONGODB_URL;
+    if (process.env.MONGODB_URI) {
+      config.uri = process.env.MONGODB_URI;
     } else if (process.env.MONGODB_HOST && process.env.MONGODB_PORT) {
       config.uri = Url.format({
         protocol: 'mongodb',

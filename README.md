@@ -12,6 +12,29 @@ Mongoose connector plugin for the hapi framework.
 npm install --save @ideapod/hapi-mongoose-connector
 ```
 
+## Configuration
+
+The plugin accepts an `options` object where:
+  - `uri`: The URI to connect to the MongoDB instance.
+
+```javascript
+const plugin = {
+  register: HapiMongooseConnector,
+  options: {
+    uri: 'mongodb://127.0.0.1:27017/test'
+  }
+};
+```
+
+If `options.uri` is not set, MongoDB checks the following environment variables in this order:
+
+  - `MONGODB_URI` (required): Contains the full MongoDB URI. Example:
+    - `MONGODB_URI`: `mongodb://127.0.0.1:27017/test`.
+  - `MONGODB_HOST` (required), `MONGODB_PORT` (required), `MONGODB_DATABASE` (optional): The plugin uses these variables to construct the URI. Example:
+    - `MONGODB_HOST`: '127.0.0.1',
+    - `MONGODB_PORT`: 27017
+    - `MONGODB_DATABASE`: 'test'
+
 ## Usage
 
 The plugin accepts a URI parameter to connect to the MongoDB instance. Example:

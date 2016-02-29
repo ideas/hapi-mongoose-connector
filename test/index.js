@@ -34,9 +34,9 @@ lab.describe('Connector', { parallel: true }, () => {
       });
   });
 
-  lab.it('supports the MONGODB_URL environment variable', () => {
+  lab.it('supports the MONGODB_URI environment variable', () => {
     const sandbox = Sinon.sandbox.create().stub(process, 'env', {
-      MONGODB_URL: 'mongodb://127.0.0.1:27017/test'
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/test'
     });
 
     const server = new Hapi.Server();
