@@ -28,16 +28,14 @@ const plugin = {
 
 If `options.uri` is not set, MongoDB checks the following environment variables in this order:
 
-  - `MONGODB_URI` (required): Contains the full MongoDB URI. Example:
-    - `MONGODB_URI`: `mongodb://127.0.0.1:27017/test`.
-  - `MONGODB_HOST` (required), `MONGODB_PORT` (required), `MONGODB_DATABASE` (optional): The plugin uses these variables to construct the URI. Example:
-    - `MONGODB_HOST`: '127.0.0.1',
-    - `MONGODB_PORT`: 27017
-    - `MONGODB_DATABASE`: 'test'
+  - `MONGODB_URI` (required): Contains the full MongoDB URI. Example: `mongodb://127.0.0.1:27017/test`.
+  - `MONGODB_HOST` (required), `MONGODB_PORT` (required), `MONGODB_DATABASE` (optional): The plugin uses these variables to construct the URI. Examples: `127.0.0.1`, `27017`, `test`.
+
+If `options.uri` is not set and none of these environment variables are set, an error is thrown on registration.
 
 ## Usage
 
-The plugin accepts a URI parameter to connect to the MongoDB instance. Example:
+The plugin can be registered as a hapi plugin. Example:
 
 ```javascript
 const Hapi = require('hapi');
@@ -56,4 +54,10 @@ const plugin = {
 server.register(plugin, (err) => {
   // ...
 });
+```
+
+Connection is exposed and can be accessed through the `server` object:
+
+```javascript
+const connection = server.plugins['hapi-mongoose-connector'].connection;
 ```
